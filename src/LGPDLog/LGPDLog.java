@@ -8,6 +8,7 @@ package LGPDLog;
 import Model.FindLog;
 import Model.UpdateLog;
 import com.google.gson.Gson;
+import javax.persistence.EntityManagerFactory;
 
 /**
  *
@@ -18,14 +19,14 @@ public class LGPDLog {
         Parameter 1: Object search
         Parameter 2: Object or ID from user responsible for the change
     */
-    public static FindLog saveFind(Object theObject, Object theUser) throws Exception{
+    public static FindLog saveFind(Object theObject, Object theUser, EntityManagerFactory emf) throws Exception{
         FindLog object = null;
         try {
             Gson gson = new Gson();
             String jsonObject = gson.toJson(theObject);
             String jsonUser = gson.toJson(theUser);
             object = new FindLog(jsonObject, jsonUser);
-            object.save();
+            object.save(emf);
         } catch (Exception e) {
             throw e;
         }
@@ -37,7 +38,7 @@ public class LGPDLog {
         Parameter 2: Object after changes
         Parameter 3: Object or ID from user responsible for the change
     */
-    public static UpdateLog saveUpdate(Object oldObject, Object newObject, Object user) throws Exception{
+    public static UpdateLog saveUpdate(Object oldObject, Object newObject, Object user, EntityManagerFactory emf) throws Exception{
         UpdateLog object = null;
         try {
             Gson gson = new Gson();
@@ -45,7 +46,7 @@ public class LGPDLog {
             String newOb = gson.toJson(newObject);
             String theUser = gson.toJson(user);
             object = new UpdateLog(oldOb, newOb, theUser);
-            object.save();
+            object.save(emf);
         } catch (Exception e) {
             throw e;
         }
